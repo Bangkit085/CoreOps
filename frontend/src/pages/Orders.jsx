@@ -2,13 +2,15 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Orders = () => {
   const [riwayat, setRiwayat] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
-    axios.get(`http://localhost:5000/api/orders/${userId}`)
+    axios.get(`${API_URL}/api/orders/${userId}`)
       .then(res => setRiwayat(res.data))
       .catch(err => console.error("Gagal:", err));
   }, []);
@@ -41,7 +43,7 @@ const Orders = () => {
                 {(order.items || []).map((item, idx) => (
                   <div key={idx} className="d-flex align-items-center mb-2">
                     <img
-                      src={`http://localhost:5000/uploads/${item.gambar_url}`}
+                      src={`${API_URL}/uploads/${item.gambar_url}`}
                       alt={item.nama_alat}
                       width="50"
                       height="50"

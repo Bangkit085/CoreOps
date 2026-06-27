@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function Cart() {
   const [items, setItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -11,7 +13,7 @@ function Cart() {
   const loadCart = async () => {
     if (!userId) return;
     try {
-      const res = await axios.get(`http://localhost:5000/api/cart/${userId}`);
+      const res = await axios.get(`${API_URL}/api/cart/${userId}`);
       setItems(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error(err);
@@ -22,13 +24,13 @@ function Cart() {
 
   const updateQuantity = async (id, newQty) => {
     if (newQty < 1) return;
-    await axios.put(`http://localhost:5000/api/cart/${id}`, { kuantitas: newQty });
+    await axios.put(`${API_URL}/api/cart/${id}`, { kuantitas: newQty });
     loadCart();
   };
 
   const handleOrder = async () => {
     try {
-      await axios.post("http://localhost:5000/api/orders/checkout", {
+      await axios.post(`${API_URL}/api/orders/checkout`, {
         user_id: userId,
         cart_ids: selectedItems
       });
@@ -77,7 +79,7 @@ function Cart() {
                     />
                   </div>
                   <div className="col-2">
-                    <img src={`http://localhost:5000/uploads/${item.gambar_url}`} width="60" />
+                    <img src={`${API_URL}/uploads/${item.gambar_url}`} width="60" />
                   </div>
                   <div className="col-3">
                     <h6>{item.nama_alat}</h6>
@@ -100,7 +102,7 @@ function Cart() {
                   <div className="col-2 text-end">
                     <button
                       className="btn btn-outline-danger btn-sm"
-                      onClick={() => axios.delete(`http://localhost:5000/api/cart/${item.id}`).then(loadCart)}
+                      onClick={() => axios.delete(`${API_URL}/api/cart/${item.id}`).then(loadCart)}
                     >Hapus</button>
                   </div>
                 </div>

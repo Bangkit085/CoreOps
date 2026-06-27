@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function AdminCart() {
   const [pendingOrders, setPendingOrders] = useState([]);
   const [loadingId, setLoadingId] = useState(null);
 
   const loadPending = () => {
-    axios.get("http://localhost:5000/api/admin/orders/pending")
+    axios.get(`${API_URL}/api/admin/orders/pending`)
       .then((res) => setPendingOrders(res.data))
       .catch((err) => console.error(err));
   };
@@ -18,7 +20,7 @@ function AdminCart() {
     if (loadingId === orderId) return;
     setLoadingId(orderId);
     try {
-      await axios.put(`http://localhost:5000/api/admin/orders/verify/${orderId}`);
+      await axios.put(`${API_URL}/api/admin/orders/verify/${orderId}`);
       alert("Pembayaran diverifikasi!");
       loadPending();
     } catch (err) {
@@ -51,7 +53,7 @@ function AdminCart() {
               {order.items.map((item, idx) => (
                 <div key={idx} className="d-flex align-items-center mb-2">
                   <img
-                    src={`http://localhost:5000/uploads/${item.gambar_url}`}
+                    src={`${API_URL}/uploads/${item.gambar_url}`}
                     alt={item.nama_alat}
                     width="50"
                     height="50"

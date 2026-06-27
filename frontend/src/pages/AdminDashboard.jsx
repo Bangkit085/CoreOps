@@ -3,6 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function AdminDashboard() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
@@ -25,7 +27,7 @@ function AdminDashboard() {
 
   const loadProducts = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/products");
+      const res = await axios.get(`${API_URL}/api/products`);
       setProducts(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error("Gagal memuat produk:", err);
@@ -37,7 +39,7 @@ function AdminDashboard() {
 
     try {
       if (editId) {
-        await axios.put(`http://localhost:5000/api/products/${editId}`, {
+        await axios.put(`${API_URL}/api/products/${editId}`, {
           nama_alat: namaAlat,
           harga: harga,
           spesifikasi_singkat: spesifikasi,
@@ -52,7 +54,7 @@ function AdminDashboard() {
         formData.append("stok", stok);
         if (gambar) formData.append("gambar", gambar);
 
-        await axios.post("http://localhost:5000/api/products", formData);
+        await axios.post(`${API_URL}/api/products`, formData);
         alert("Produk berhasil ditambahkan!");
       }
 
@@ -67,7 +69,7 @@ function AdminDashboard() {
 
   const hapusProduk = async (id) => {
     if (window.confirm("Yakin ingin menghapus produk ini?")) {
-      await axios.delete(`http://localhost:5000/api/products/${id}`);
+      await axios.delete(`${API_URL}/api/products/${id}`);
       loadProducts();
     }
   };
@@ -128,7 +130,7 @@ function AdminDashboard() {
             {filteredProducts.length > 0 ? (
               filteredProducts.map((item) => (
                 <tr key={item.id} className="align-middle">
-                  <td><img src={`http://localhost:5000/uploads/${item.gambar_url}`} width="60" className="rounded" alt={item.nama_alat} /></td>
+                  <td><img src={`${API_URL}/uploads/${item.gambar_url}`} width="60" className="rounded" alt={item.nama_alat} /></td>
                   <td>{item.nama_alat}</td>
                   <td>Rp{Number(item.harga).toLocaleString()}</td>
                   <td><span className="badge bg-primary">{item.stok}</span></td>

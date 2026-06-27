@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function Home() {
   const [products, setProducts] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [loadingId, setLoadingId] = useState(null);
 
   const loadProducts = () => {
-    axios.get("http://localhost:5000/api/products")
+    axios.get(`${API_URL}/api/products`)
       .then((res) => setProducts(res.data))
       .catch((err) => console.error(err));
   };
@@ -22,7 +24,7 @@ function Home() {
 
     setLoadingId(id);
     try {
-      await axios.post("http://localhost:5000/api/cart", {
+      await axios.post(`${API_URL}/api/cart`, {
         user_id: userId,
         product_id: id,
         kuantitas: 1
@@ -57,7 +59,7 @@ function Home() {
               <div className="col-md-3 mb-4" key={item.id}>
                 <div className="card h-100 border-0 shadow-sm rounded-3 overflow-hidden">
                   <img
-                    src={`http://localhost:5000/uploads/${item.gambar_url}`}
+                    src={`${API_URL}/uploads/${item.gambar_url}`}
                     className="card-img-top"
                     alt={item.nama_alat}
                     style={{ height: "200px", objectFit: "cover" }}
