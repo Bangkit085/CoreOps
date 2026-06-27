@@ -1,12 +1,12 @@
 {
     "experimentalServices": {
         "frontend": {
-            "root": "coreops_space/frontend",
+            "root": "frontend",
             "routePrefix": "/",
             "framework": "vite"
         },
         "backend": {
-            "root": "coreops_space/backend",
+            "root": "backend",
             "routePrefix": "/_/backend"
         }
     }
